@@ -1,0 +1,16 @@
+# Ignore Python cache & environment
+__pycache__/
+*.pyc
+.env/
+venv/
+.idea/
+.ipynb_checkpoints/
+
+# Ignore temporary and model files
+temp_upload/
+temp_faces/
+models/*.pth
+
+# Ignore Streamlit and system files
+.streamlit/
+.DS_Store
