@@ -11,7 +11,7 @@ The app detects faces, generates embeddings, and clusters them by **individual i
 - **Multiple Clustering Algorithms:**
   - DBSCAN 
   - K-Means
-  - Agglomerative (supports dynamic threshold mode)
+  - Agglomerative
 - Silhouette score evaluation
 - **Interactive Web Interface** (built with Streamlit)
 - **Dynamic Visualization** using **t-SNE**
