@@ -3,7 +3,7 @@ import cv2
 from PIL import Image
 from mtcnn import MTCNN
 
-# ✅ Create one global MTCNN detector instance
+# Create one global MTCNN detector instance
 GLOBAL_DETECTOR = MTCNN()
 
 def detect_and_align_faces(image_path, output_size=(160,160), padding=0.2, detector=GLOBAL_DETECTOR):
