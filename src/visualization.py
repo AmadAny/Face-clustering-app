@@ -60,4 +60,4 @@ def imscatter_with_thumbs(emb2d, image_paths, N=50, zoom=0.5, random_seed=42):
     ax.update_datalim(subset_coords)
     ax.autoscale()
     ax.axis('off')
-    st.pyplot(fig)  # ✅ display inside Streamlit
+    st.pyplot(fig)  # display inside Streamlit
