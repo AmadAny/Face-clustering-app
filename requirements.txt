@@ -1,17 +1,14 @@
 # Package management
 setuptools
 wheel
-
 # Core pipeline dependencies
 facenet-pytorch==2.5.3
 opencv-python-headless
-mtcnn==0.1.1
 pandas>=2.1.2
 scikit-learn
 matplotlib
 numpy
 Pillow
-
 # Streamlit + Ngrok for UI
 streamlit
 pyngrok
