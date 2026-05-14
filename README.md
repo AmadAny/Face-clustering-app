@@ -43,7 +43,6 @@ However, if you want to run it locally, you can install the same dependencies ma
 pip install --upgrade setuptools wheel  
 pip install facenet-pytorch==2.5.3  
 pip install opencv-python-headless  
-pip install mtcnn==0.1.1  
 pip install pandas>=2.1.2  
 pip install scikit-learn matplotlib numpy Pillow  
 pip install streamlit pyngrok  
