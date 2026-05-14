@@ -12,7 +12,9 @@ from src.embedding import load_model, generate_embeddings_from_folder
 from src.clustering import cluster_embeddings
 from src.evaluation import evaluate_clustering
 
+# =============================
 # Streamlit UI
+# =============================
 
 st.set_page_config(page_title="Face Clustering App", layout="wide")
 st.title("🧠 Face Clustering and Evaluation Dashboard")
@@ -31,8 +33,9 @@ if 'uploaded_file_contents' not in st.session_state:
 if 'uploaded_file_names' not in st.session_state:
     st.session_state.uploaded_file_names = []
 
+# -----------------------------
 # Sidebar Settings
-
+# -----------------------------
 st.sidebar.header("Settings")
 
 # --- Model selection ---
@@ -56,9 +59,12 @@ selected_methods = st.sidebar.multiselect(
 
 # Determine if only Agglomerative is selected and dynamic
 only_agglo_selected = selected_methods == ["agglomerative"]
+
 agglo_dynamic = st.sidebar.checkbox(
-    "Agglomerative: Auto-detect clusters (distance threshold)", value=False
+    "Agglomerative: Adaptive clustering (similarity-based merging)",
+    value=False
 ) if "agglomerative" in selected_methods else False
+
 is_only_agglo_dynamic = only_agglo_selected and agglo_dynamic
 
 # Conditional sliders
@@ -74,15 +80,16 @@ dbscan_params = {}
 if "dbscan" in selected_methods:
     st.sidebar.subheader("DBSCAN Parameters")
     dbscan_params["eps"] = st.sidebar.slider("EPS (Neighborhood radius)", 0.1, 2.0, 0.5, 0.1)
-    dbscan_params["min_samples"] = st.sidebar.slider("Min Samples per cluster", 1, 20, 5, 1)
+    dbscan_params["min_samples"] = st.sidebar.slider("Min Samples per cluster", 1, 20, 2, 1)
 
 # Agglomerative options
 agglo_threshold, agglo_n_clusters = None, None
 if "agglomerative" in selected_methods:
-    st.sidebar.subheader("Agglomerative Parameters")
+    st.sidebar.subheader("Agglomerative Settings (Post-clustering merging)")
     if agglo_dynamic:
         agglo_threshold = st.sidebar.slider(
-            "Distance threshold (lower = more clusters)", 0.1, 5.0, 1.0, 0.1
+            "Cluster merging threshold (cosine similarity)",
+            0.1, 5.0, 1.0, 0.1
         )
     else:
         agglo_n_clusters = st.sidebar.slider("Number of clusters (manual mode)", 2, 20, 5, 1)
@@ -121,9 +128,9 @@ if st.session_state.uploaded_file_names:
 else:
     st.info("No files uploaded yet. Please use the uploader above.")
 
-
+# -----------------------------
 # Step 2: Run Clustering
-
+# -----------------------------
 if st.button("🚀 Run Face Clustering"):
     if not st.session_state.uploaded_file_names:
         st.error("Please upload some images first.")
@@ -175,15 +182,27 @@ if st.button("🚀 Run Face Clustering"):
                         embeddings,
                         method=method,
                         eps=dbscan_params["eps"],
-                        min_samples=dbscan_params["min_samples"]
+                        min_samples=dbscan_params["min_samples"],
+                        adaptive_eps=False
                     )
+
                 elif method == "agglomerative":
                     if agglo_dynamic:
-                        st.info(f"🔄 Dynamic clustering (threshold = {agglo_threshold})...")
-                        labels = cluster_embeddings(embeddings, method=method, distance_threshold=agglo_threshold)
+                        st.info(f"🔄 Adaptive clustering (merge threshold = {agglo_threshold})...")
+                        labels = cluster_embeddings(
+                            embeddings,
+                            method=method,
+                            n_clusters=min(50, len(embeddings)),
+                            merge_threshold=agglo_threshold
+                        )
                     else:
                         st.info(f"📊 Fixed number of clusters = {agglo_n_clusters}")
-                        labels = cluster_embeddings(embeddings, method=method, n_clusters=agglo_n_clusters)
+                        labels = cluster_embeddings(
+                            embeddings,
+                            method=method,
+                            n_clusters=agglo_n_clusters
+                        )
+
                 else:
                     labels = cluster_embeddings(embeddings, method=method)
 
