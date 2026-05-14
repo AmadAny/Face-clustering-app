@@ -50,8 +50,7 @@ pip install streamlit pyngrok
 # Model
 The app supports two models:
   1. Pre-trained FaceNet (VGGFace2); automatically downloaded via facenet-pytorch.
-  2.Fine-tuned FaceNet (ArcFace Head); trained on LFW and saved as: /content/drive/MyDrive/Project alt version/models/facenet_lfw_best_state.pth
-This model is not included in the repository due to file size
+  2. Fine-tuned FaceNet (ArcFace Head); trained on LFW and saved as: /content/drive/MyDrive/Project alt version/models/facenet_lfw_best_state.pth. This model is not included in the repository due to file size.
 
 ---
 
